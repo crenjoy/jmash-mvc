@@ -2,7 +2,7 @@
 
 # Jakarta MVC 2.1 Impl
 
-
+## 推荐 Use Jersey ,  Tomcat Use Resteasy Load 2 Time .
 
 ## 1.jmash-mvc-resteasy 
 
