@@ -1,0 +1,531 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.gitee.jmash</groupId>
+    <artifactId>jmash-mvc</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>jmash</name>
+    <description>JMash旨在遵从Jakarta EE 10 规范,构建Service Mash(服务网格)架构实践。</description>
+    <packaging>pom</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- JSE 17-->
+        <java.version>17</java.version>
+        <!-- JAKARTA EE 10 -->
+        <jakarta.version>10.0.0</jakarta.version>
+        <!-- CURRENT_GRPC_VERSION -->
+        <grpc.version>1.51.0</grpc.version>
+        <protobuf.version>3.21.7</protobuf.version>
+        <protoc.version>3.21.7</protoc.version>
+        <!-- CDI 4.0 -->
+        <weld.version>5.1.0.Final</weld.version>
+        <!-- RESTful 3.1 -->
+        <jersey.version>3.1.0</jersey.version>
+        <!-- Hibernate -->
+        <hibernate.version>6.1.4.Final</hibernate.version>
+        <!-- mybatis  -->
+        <mybasis.version>3.5.11</mybasis.version>
+        <!-- druid -->
+        <druid-version>1.2.12</druid-version>
+        <!--Mariadb-->
+        <mariadb.version>2.7.3</mariadb.version>
+        <!-- Logback -->
+        <logback.version>1.4.5</logback.version>
+        <!-- Java Template Engine -->
+        <freemarker.version>2.3.31</freemarker.version>
+        <!-- Redis  -->
+        <jedis.version>4.3.0</jedis.version>
+        <!--POI -->
+        <poi.version>5.2.3</poi.version>
+        <!-- zipkin -->
+        <zipkin.version>5.14.1</zipkin.version>
+        <!-- tomcat -->
+        <tomcat.version>10.1.4</tomcat.version>
+        <!-- log4j optional -->
+        <log4j.version>2.19.0</log4j.version>
+        <!-- consul optional -->
+        <consul.api.version>1.4.5</consul.api.version>
+        <!-- MySQL optional -->
+        <mysql.version>8.0.30</mysql.version>
+    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencyManagement>
+        <dependencies>
+            <!-- Jakarta EE 10-->
+            <dependency>
+                <groupId>jakarta.platform</groupId>
+                <artifactId>jakarta.jakartaee-bom</artifactId>
+                <version>${jakarta.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- ws3、Json2、annotation2、interceptor2、cdi4、inject2、xml4、el5 -->
+            <dependency>
+                <groupId>jakarta.platform</groupId>
+                <artifactId>jakarta.jakartaee-core-api</artifactId>
+                <version>${jakarta.version}</version>
+            </dependency>
+            <!-- servlet6、jsp3、websocket3、ejb4、JPA3、JTA2、validation3、security3 -->
+            <dependency>
+                <groupId>jakarta.platform</groupId>
+                <artifactId>jakarta.jakartaee-web-api</artifactId>
+                <version>${jakarta.version}</version>
+            </dependency>
+            <!-- jms3、activation2、mail2、resource2、authorization2、batch2、xml4、JSF4-->
+            <dependency>
+                <groupId>jakarta.platform</groupId>
+                <artifactId>jakarta.jakartaee-api</artifactId>
+                <version>${jakarta.version}</version>
+            </dependency>
+            <!-- jakarta Annotation 逐步取代 Javax Annotation -->
+            <dependency>
+                <groupId>javax.annotation</groupId>
+                <artifactId>jsr250-api</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <!-- CDI 4.0 -->
+            <dependency>
+                <groupId>org.jboss.weld</groupId>
+                <artifactId>weld-core-parent</artifactId>
+                <version>${weld.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.weld.se</groupId>
+                <artifactId>weld-se-core</artifactId>
+                <version>${weld.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.weld.servlet</groupId>
+                <artifactId>weld-servlet-core</artifactId>
+                <version>${weld.version}</version>
+            </dependency>
+            <!-- jakarta validator -->
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>8.0.0.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.expressly</groupId>
+                <artifactId>expressly</artifactId>
+                <version>5.0.0</version>
+            </dependency>
+            <!-- Tomcat Embed -->
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.experimental</groupId>
+                <artifactId>tomcat-embed-programmatic</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-jasper</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-websocket</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <!-- jakarta mvc 2.1.0-->
+            <dependency>
+                <groupId>jakarta.mvc</groupId>
+                <artifactId>jakarta.mvc-api</artifactId>
+                <version>2.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.krazo</groupId>
+                <artifactId>krazo-core</artifactId>
+                <version>3.0.1</version>
+            </dependency>
+            <!-- mvc freemarker -->
+            <dependency>
+                <groupId>org.eclipse.krazo.ext</groupId>
+                <artifactId>krazo-freemarker</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+            <!-- mvc velocity  -->
+            <dependency>
+                <groupId>org.eclipse.krazo.ext</groupId>
+                <artifactId>krazo-velocity</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+            <!--  MVC  and JAX-RS  -->
+            <dependency>
+                <groupId>org.eclipse.krazo</groupId>
+                <artifactId>krazo-jersey</artifactId>
+                <version>3.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.krazo</groupId>
+                <artifactId>krazo-resteasy</artifactId>
+                <version>3.0.1</version>
+            </dependency>
+            <!--   JAX-RS Resteasy Server  -->
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-bom</artifactId>
+                <version>6.2.1.Final</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--   JAX-RS Jersey Server 3.1 -->
+            <dependency>
+                <groupId>org.glassfish.jersey.containers</groupId>
+                <artifactId>jersey-container-servlet</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-json-jackson</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.inject</groupId>
+                <artifactId>jersey-hk2</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.ext.cdi</groupId>
+                <artifactId>jersey-cdi1x-servlet</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.ext</groupId>
+                <artifactId>jersey-bean-validation</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <!-- JAX-RS Client 3.1 and CDI SE -->
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-client</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.security</groupId>
+                <artifactId>oauth2-client</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.inject</groupId>
+                <artifactId>jersey-cdi2-se</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <!-- Grpc Pom -->
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-bom</artifactId>
+                <version>${grpc.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.crenjoy</groupId>
+                <artifactId>proto-beanutils</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <!-- Grpc Protobuf  -->
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-bom</artifactId>
+                <version>${protobuf.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Grpc JRE -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>31.1-jre</version>
+                <!-- or, for Android: 31.1-android -->
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.errorprone</groupId>
+                        <artifactId>error_prone_annotations</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- GRPC AUTH -->
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-auth</artifactId>
+                <version>${grpc.version}</version>
+            </dependency>
+            <!-- commons -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.12.0</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.11.0</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>1.9.4</version>
+            </dependency>
+            <!-- httpcore -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore</artifactId>
+                <version>4.4.15</version>
+            </dependency>
+            <!-- java redis -->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- JPA 3.1 Hibernate Impl -->
+            <dependency>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <!-- byte buddy -->
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>1.12.9</version>
+            </dependency>
+            <!-- Mybatis -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybasis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-cdi</artifactId>
+                <version>1.1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper</artifactId>
+                <version>5.3.2</version>
+            </dependency>
+            <!--druid-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid-version}</version>
+            </dependency>
+            <!-- Mariadb -->
+            <dependency>
+                <groupId>org.mariadb.jdbc</groupId>
+                <artifactId>mariadb-java-client</artifactId>
+                <version>${mariadb.version}</version>
+            </dependency>
+            <!-- Mysql数据库 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <!-- poi -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- 服务注册发现 -->
+            <dependency>
+                <groupId>com.ecwid.consul</groupId>
+                <artifactId>consul-api</artifactId>
+                <version>${consul.api.version}</version>
+            </dependency>
+            <!-- shiro -->
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-core</artifactId>
+                <version>1.9.0</version>
+            </dependency>
+            <!-- JWT -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>0.11.5</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>0.11.5</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-gson</artifactId>
+                <version>0.11.5</version>
+                <scope>runtime</scope>
+            </dependency>
+            <!-- oltu oauth -->
+            <dependency>
+                <groupId>org.apache.oltu.oauth2</groupId>
+                <artifactId>org.apache.oltu.oauth2.authzserver</artifactId>
+                <version>1.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.oltu.oauth2</groupId>
+                <artifactId>org.apache.oltu.oauth2.resourceserver</artifactId>
+                <version>1.0.2</version>
+            </dependency>
+            <!-- Google OAuth2 -->
+            <dependency>
+                <groupId>com.google.auth</groupId>
+                <artifactId>google-auth-library-oauth2-http</artifactId>
+                <version>1.4.0</version>
+            </dependency>
+            <!-- Java Template Engine -->
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
+            </dependency>
+            <!--JSON-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.83</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.9.0</version>
+            </dependency>
+            <!-- log 默认选择 logback  -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <!-- logback 兼容 slf4j -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <!-- Log4j 默认不采用 -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-bom</artifactId>
+                <version>${log4j.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <!-- slf4j log 门面接口  -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>2.0.4</version>
+            </dependency>
+            <!-- JCL To slf4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>2.0.4</version>
+            </dependency>
+            <!-- gRPC JUL To slf4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>2.0.4</version>
+            </dependency>
+            <!-- 日志链路 Instruments the underlying gRPC requests -->
+            <dependency>
+                <groupId>io.zipkin.brave</groupId>
+                <artifactId>brave-bom</artifactId>
+                <version>${zipkin.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- classic captcha https://svn.code.sf.net/p/jcaptcha/code -->
+            <dependency>
+                <groupId>io.leopard.thirdparty</groupId>
+                <artifactId>jcaptcha-core</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <!-- Test junit5-->
+            <dependency>
+                <groupId>org.junit.vintage</groupId>
+                <artifactId>junit-vintage-engine</artifactId>
+                <version>5.8.1</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>5.8.1</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <distributionManagement>
+        <repository>
+            <id>artifactory</id>
+            <name>artifactory-releases</name>
+            <url>https://maven.crenjoy.com/artifactory/libs-release-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>artifactory</id>
+            <name>artifactory-snapshots</name>
+            <url>https://maven.crenjoy.com/artifactory/libs-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>
